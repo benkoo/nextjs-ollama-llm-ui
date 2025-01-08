@@ -43,7 +43,12 @@ export default function ChatTopbar({
 
   useEffect(() => {
     const fetchModels = async () => {
-      const fetchedModels = await fetch("/api/tags");
+      const fetchedModels = await fetch("http://127.0.0.1:11434/api/tags");
+      if (!fetchedModels.ok) {
+        const errorText = await fetchedModels.text();
+        console.error('Fetch error:', fetchedModels.status, errorText);
+        return;
+      }
       const json = await fetchedModels.json();
       const apiModels = json.models.map((model: any) => model.name);
       setModels([...apiModels]);
